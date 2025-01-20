@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,12 @@ import com.demo.model.Feedback;
 import com.demo.model.Route;
 import com.demo.service.FeedbackServiceInterface;
 
+import jakarta.validation.Valid;
+
+
 @RestController
 @RequestMapping ("/feedback")
+@Validated
 public class FeedbackController {
 
 	@Autowired
@@ -28,7 +33,7 @@ public class FeedbackController {
 	//1. handling add Feedback
 	 
 			@PostMapping ("/add")         // http://localhost:2020/feedback/add
-			  public ResponseEntity<Feedback> addFeedback(@RequestBody Feedback feedback){
+			  public ResponseEntity<Feedback> addFeedback(@Valid @RequestBody Feedback feedback){
 				Feedback fedAdd=  service.addFeedBack(feedback);
 				return new ResponseEntity<Feedback>(fedAdd, HttpStatus.CREATED);
 			  }
@@ -36,7 +41,7 @@ public class FeedbackController {
 			//2. handling update
 			
 			@PutMapping  ("/update")     // http://localhost:2020/feedback/update
-			public ResponseEntity<Feedback> updateFeedback(@RequestBody Feedback feedback){
+			public ResponseEntity<Feedback> updateFeedback(@Valid @RequestBody Feedback feedback){
 				
 				Feedback fedUpd =service.updateFeedBack(feedback);
 				return new ResponseEntity<Feedback>(fedUpd, HttpStatus.CREATED);

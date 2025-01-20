@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,12 @@ import com.demo.model.Reservation;
 import com.demo.model.Route;
 import com.demo.service.RouteServiceInterface;
 
+import jakarta.validation.Valid;
+
+
 @RestController 
 @RequestMapping ("/route")
+@Validated
 public class RouteController {
 
 	@Autowired
@@ -29,7 +34,7 @@ public class RouteController {
 	//1. handling add route
 	 
 		@PostMapping ("/add")         // http://localhost:2020/route/add
-		  public ResponseEntity<Route> addRoute(@RequestBody Route route){
+		  public ResponseEntity<Route> addRoute(@Valid @RequestBody Route route){
 			Route rouAdd=  service.addRoute(route);
 			return new ResponseEntity<Route>(rouAdd, HttpStatus.CREATED);
 		  }
@@ -37,7 +42,7 @@ public class RouteController {
 		//2. handling update
 		
 		@PutMapping  ("/update")     // http://localhost:2020/route/update
-		public ResponseEntity<Route> updateRoute(@RequestBody Route route){
+		public ResponseEntity<Route> updateRoute(@Valid @RequestBody Route route){
 			
 			Route rouUpd =service.updateRoute(route);
 			return new ResponseEntity<Route>(rouUpd, HttpStatus.CREATED);

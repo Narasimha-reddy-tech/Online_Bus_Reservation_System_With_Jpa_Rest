@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,12 @@ import com.demo.model.Bus;
 import com.demo.model.User;
 import com.demo.service.BusServiceInterface;
 
+import jakarta.validation.Valid;
+
+
 @RestController
 @RequestMapping  ("/bus")
+@Validated
 public class BusController {
 
 	@Autowired
@@ -29,7 +34,7 @@ public class BusController {
 	//1. handling add Bus
 	 
 	@PostMapping ("/add")         // http://localhost:2020/bus/add
-	  public ResponseEntity<Bus> addBus(@RequestBody Bus bus){
+	  public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus bus){
 		Bus busAdd=  service.addBus(bus);
 		return new ResponseEntity<Bus>(busAdd, HttpStatus.CREATED);
 	  }
@@ -37,7 +42,7 @@ public class BusController {
 	//2. handling update
 	
 	@PutMapping  ("/update")     // http://localhost:2020/bus/update
-	public ResponseEntity<Bus> updateBus(@RequestBody Bus bus){
+	public ResponseEntity<Bus> updateBus ( @Valid @RequestBody Bus bus){
 		Bus busUpd =service.updateBus(bus);
 		return new ResponseEntity<Bus>(busUpd, HttpStatus.CREATED);
 	}
@@ -61,12 +66,12 @@ public class BusController {
 	
 	//5. handle viewBusByType
 	
-//	@GetMapping  ("/viewtype")            //http://localhost:2020/bus/viewtype
-//	public ResponseEntity<List<Bus>> viewBusByType (@RequestParam String busType){
-//	List<Bus>busViewByType=	service.viewBusByType(busType);
-//		return new ResponseEntity<List<Bus>>(busViewByType, HttpStatus.OK);
-//		
-//	}
+	@GetMapping  ("/viewtype")            //http://localhost:2020/bus/viewtype
+	public ResponseEntity<List<Bus>> viewBusByType (@RequestParam String busType){
+	List<Bus>busViewByType=	service.viewBusByType(busType);
+		return new ResponseEntity<List<Bus>>(busViewByType, HttpStatus.OK);
+		
+	}
 	
 	
 	//6. handle viewAll Bus

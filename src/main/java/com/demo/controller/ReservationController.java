@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.model.Reservation;
 import com.demo.service.ReservationServiceInterface;
 
+import jakarta.validation.Valid;
+
+
 @RestController 
 @RequestMapping ("/reserve")
+@Validated
 public class ReservationController {
 
 	@Autowired
@@ -29,7 +34,7 @@ public class ReservationController {
 	//1. handling add reservation
 	 
 	@PostMapping ("/add")         // http://localhost:2020/reserve/add
-	  public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation){
+	  public ResponseEntity<Reservation> addReservation(@Valid @RequestBody Reservation reservation){
 		Reservation revAdd=  service.addReservation(reservation);
 		return new ResponseEntity<Reservation>(revAdd, HttpStatus.CREATED);
 	  }
@@ -37,7 +42,7 @@ public class ReservationController {
 	//2. handling update
 	
 	@PutMapping  ("/update")     // http://localhost:2020/reserve/update
-	public ResponseEntity<Reservation> updateReservation(@RequestBody Reservation reservation){
+	public ResponseEntity<Reservation> updateReservation(@Valid @RequestBody Reservation reservation){
 		Reservation revUpd =service.updateReservation(reservation);
 		return new ResponseEntity<Reservation>(revUpd, HttpStatus.CREATED);
 	}

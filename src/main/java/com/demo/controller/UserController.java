@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,12 @@ import com.demo.model.Route;
 import com.demo.model.User;
 import com.demo.service.UserServiceInterface;
 
+import jakarta.validation.Valid;
+
+
 @RestController
 @RequestMapping ("/user")
+@Validated
 public class UserController {
 
 	@Autowired
@@ -28,7 +33,7 @@ public class UserController {
 	//1. handling add User
 	 
 			@PostMapping ("/add")         // http://localhost:2020/user/add
-			  public ResponseEntity<User> addUser(@RequestBody User user){
+			  public ResponseEntity<User> addUser(@Valid @RequestBody User user){
 				User useAdd=  service.addUser(user);
 				return new ResponseEntity<User>(useAdd, HttpStatus.CREATED);
 			  }
@@ -36,7 +41,7 @@ public class UserController {
 			//2. handling update
 			
 			@PutMapping  ("/update")     // http://localhost:2020/user/update
-			public ResponseEntity<User> updateUser(@RequestBody User user){
+			public ResponseEntity<User> updateUser(@Valid @RequestBody User user){
 				
 				User useUpd =service.updateUser(user);
 				return new ResponseEntity<User>(useUpd, HttpStatus.CREATED);
